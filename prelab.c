@@ -63,10 +63,11 @@ void __interrupt() isr (void)
     
     if (INTCONbits.RBIF)
     {
-        if (!PORTBbits.RB0)
+        
+        if (!PORTBbits.RB1)
         {
-            SLEEP();
-        }    
+            __delay_ms(100);
+        }
         INTCONbits.RBIF = 0;    // Limpiamos bandera de interrupción RBIF
     }
 }
@@ -83,7 +84,10 @@ void main(void) {
         __delay_us(50);
         ADCON0bits.GO = 1;
     } 
-        
+    if (!PORTBbits.RB0)
+        {
+            SLEEP();
+        }    
     }        
     return;
 }
@@ -117,7 +121,7 @@ void setup (void){
     WPUBbits.WPUB1 = 1;
     
     INTCONbits.RBIE = 1;        // Habilitamos interrupciones del PORTB
-    IOCBbits.IOCB0 = 1;         // Habilitamos IOCB en RB0 & RB1
+    //IOCBbits.IOCB0 = 1;         // Habilitamos IOCB en RB0 & RB1
     IOCBbits.IOCB1 = 1;
     
     INTCONbits.RBIF = 0;        // Limpiamos bandera de interrupción de PORTB
