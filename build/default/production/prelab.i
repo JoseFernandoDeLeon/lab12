@@ -2665,9 +2665,10 @@ void __attribute__((picinterrupt(("")))) isr (void)
 
     if (INTCONbits.RBIF)
     {
-        if (!PORTBbits.RB0)
+
+        if (!PORTBbits.RB1)
         {
-            __asm("sleep");
+            _delay((unsigned long)((100)*(4000000/4000.0)));
         }
         INTCONbits.RBIF = 0;
     }
@@ -2685,7 +2686,10 @@ void main(void) {
         _delay((unsigned long)((50)*(4000000/4000000.0)));
         ADCON0bits.GO = 1;
     }
-
+    if (!PORTBbits.RB0)
+        {
+            __asm("sleep");
+        }
     }
     return;
 }
@@ -2719,7 +2723,7 @@ void setup (void){
     WPUBbits.WPUB1 = 1;
 
     INTCONbits.RBIE = 1;
-    IOCBbits.IOCB0 = 1;
+
     IOCBbits.IOCB1 = 1;
 
     INTCONbits.RBIF = 0;

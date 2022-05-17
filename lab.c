@@ -74,11 +74,12 @@ void __interrupt() isr (void)
             PORTD = read_EEPROM(0x00);
         }
         
-        if (!PORTBbits.RB1)
-        {
-            SLEEP();
-        }
         
+        
+        if (!PORTBbits.RB2){
+            __delay_ms(100);
+        }
+                
         INTCONbits.RBIF = 0;    // Limpiamos bandera de interrupción RBIF
     }
     return;
@@ -96,7 +97,10 @@ void main(void) {
         __delay_us(50);
         ADCON0bits.GO = 1;
     } 
-        
+    if (!PORTBbits.RB1)
+        {
+            SLEEP();
+        }    
     }        
     return;
 }
@@ -120,16 +124,17 @@ void setup (void){
     PORTD = 0;                  // Limpiamos PORTD 
    
     // Configuración de las IOCB
-    TRISB = 0b00000011;         // RB0 & RB1 de PORTB como entradas
+    TRISB = 0b00000111;         // RB0 & RB1 de PORTB como entradas
     PORTB = 0;
     
     OPTION_REGbits.nRBPU = 0;   // Habilitamos resistencias de pull-up del PORTB
     WPUBbits.WPUB0 = 1;         // Habilitamos resistencia de pull-up de RB0 & RB1
     WPUBbits.WPUB1 = 1;
+    WPUBbits.WPUB2 = 1;
     
     INTCONbits.RBIE = 1;        // Habilitamos interrupciones del PORTB
     IOCBbits.IOCB0 = 1;         // Habilitamos IOCB en RB0 & RB1
-    IOCBbits.IOCB1 = 1;
+    IOCBbits.IOCB2 = 1;
     
     INTCONbits.RBIF = 0;        // Limpiamos bandera de interrupción de PORTB
     

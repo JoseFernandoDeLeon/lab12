@@ -1,4 +1,4 @@
-# 1 "lab.c"
+# 1 "../Lab12.X/lab.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,8 +6,8 @@
 # 1 "<built-in>" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "lab.c" 2
-# 14 "lab.c"
+# 1 "../Lab12.X/lab.c" 2
+# 14 "../Lab12.X/lab.c"
 #pragma config FOSC = INTRC_NOCLKOUT
 #pragma config WDTE = OFF
 #pragma config PWRTE = OFF
@@ -2644,11 +2644,11 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 29 "C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42/xc8\\pic\\include\\xc.h" 2 3
-# 32 "lab.c" 2
+# 32 "../Lab12.X/lab.c" 2
 
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.35\\pic\\include\\c90\\stdint.h" 1 3
-# 33 "lab.c" 2
-# 47 "lab.c"
+# 33 "../Lab12.X/lab.c" 2
+# 47 "../Lab12.X/lab.c"
 uint8_t pot = 0;
 
 
@@ -2679,9 +2679,10 @@ void __attribute__((picinterrupt(("")))) isr (void)
             PORTD = read_EEPROM(0x00);
         }
 
-        if (!PORTBbits.RB1)
-        {
-            __asm("sleep");
+
+
+        if (!PORTBbits.RB2){
+            _delay((unsigned long)((100)*(4000000/4000.0)));
         }
 
         INTCONbits.RBIF = 0;
@@ -2701,7 +2702,10 @@ void main(void) {
         _delay((unsigned long)((50)*(4000000/4000000.0)));
         ADCON0bits.GO = 1;
     }
-
+    if (!PORTBbits.RB1)
+        {
+            __asm("sleep");
+        }
     }
     return;
 }
@@ -2725,16 +2729,17 @@ void setup (void){
     PORTD = 0;
 
 
-    TRISB = 0b00000011;
+    TRISB = 0b00000111;
     PORTB = 0;
 
     OPTION_REGbits.nRBPU = 0;
     WPUBbits.WPUB0 = 1;
     WPUBbits.WPUB1 = 1;
+    WPUBbits.WPUB2 = 1;
 
     INTCONbits.RBIE = 1;
     IOCBbits.IOCB0 = 1;
-    IOCBbits.IOCB1 = 1;
+    IOCBbits.IOCB2 = 1;
 
     INTCONbits.RBIF = 0;
 
